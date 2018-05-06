@@ -138,10 +138,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 1 px or 1 ppt
-        bindsym k resize grow height 1 px or 1 ppt
-        bindsym l resize shrink height 1 px or 1 ppt
-        bindsym semicolon resize grow width 1 px or 1 ppt
+        bindsym h resize shrink width 1 px or 1 ppt
+        bindsym j resize grow height 1 px or 1 ppt
+        bindsym k resize shrink height 1 px or 1 ppt
+        bindsym l resize grow width 1 px or 1 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 1 px or 1 ppt
@@ -161,15 +161,19 @@ bindsym $mod+r mode "resize"
 bar {
 #	status_command i3status
 	status_command i3blocks
-#	status_command lemonbar
+	# i3bar_command ~/.config/i3/lemonbar.sh | lemonbar -p
 	position top
 }
+
+# Set time with ( timedatectl set-time "2014-05-26 11:13:54" )
+
+# exec ~/.config/i3/lemonbar.sh | lemonbar -p
 
 new_window none
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +1% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -1% #decrease sound volume
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +.5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -.5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle #mute sound
 
 # Media Player controls
@@ -179,17 +183,18 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec light -A 1 # increase screen brightness
-bindsym XF86MonBrightnessDown exec light -U 1 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec light -A .5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U .5 # decrease screen brightness
 
 # Screenshot
 bindsym Print exec scrot -e 'mv $f /tmp/ && gimp /tmp/$f'
 
 # Set background
 # exec --no-startup-id feh --bg-fill ~/Pictures/maxresdefault.jpg
-exec --no-startup-id feh --bg-fill ~/Downloads/2017-12-04-194408_1366x768_scrot.png
+# exec --no-startup-id feh --bg-fill ~/Downloads/2017-12-04-194408_1366x768_scrot.png
+exec --no-startup-id feh --bg-fill ~/.Other/2017-12-31-122819_1366x768_scrot.png
 exec /usr/bin/compton --config /home/kel/.compton.conf~.i3/config
-exec compton
+exec compton 
 
 # Home wifi
 # exec nmcli device wifi connect "username" password "password"
@@ -199,7 +204,7 @@ exec compton
 exec --no-startup-id nm-applet
 
 # Set gaps
-gaps inner 12
+gaps inner 8
 
 # Startup workspaces
 exec --no-startup-id i3-msg 'workspace 1:Terminator; exec /usr/bin/terminator'
@@ -210,8 +215,18 @@ exec --no-startup-id i3-msg 'workspace 4; exec /usr/bin/bleachbit'
 # Set faster repeat rate
 exec xset r rate 180 30
 
+# Keep display on, no timeout
+exec xset s off
+# exec xset -dpms
+
+# set capslock to ctrl
+exec setxkbmap -layout us -option ctrl:nocaps
+
 # HDMI
 # exec xrandr --output HDMI-1 --mode 1368x768_60.00
 
 # Set timezone
 #exec timedatectl set-timezone America/Los_Angeles
+
+# Have locate work with arch
+exec sudo updatedb
